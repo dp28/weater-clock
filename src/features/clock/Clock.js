@@ -21,10 +21,13 @@ export const Light = ({ light, degreesPerLight }) => {
     >
       <div
         style={{
-          backgroundColor: "white",
+          backgroundColor: light.on ? light.color : null,
           height: `calc(2 * ${LightRadius})`,
           width: `calc(2 * ${LightRadius})`,
-          borderRadius: LightRadius
+          borderRadius: LightRadius,
+          boxShadow: light.on
+            ? `${light.color} 0 0 calc(1.5 * ${LightRadius}) calc(0.2 * ${LightRadius})`
+            : `inset ${light.color} 0 0 calc(1 * ${LightRadius})`
         }}
       />
     </div>
@@ -61,5 +64,10 @@ export const Clock = () => (
 );
 
 function buildLights(number) {
-  return [...Array(number)].map((_, index) => ({ index, number: index + 1 }));
+  return [...Array(number)].map((_, index) => ({
+    index,
+    number: index + 1,
+    color: "white",
+    on: index < 20
+  }));
 }
