@@ -1,0 +1,33 @@
+.clock {
+  position: relative;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+  max-width: 100vh;
+  max-height: 100vw;
+}
+
+.clock:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.clockContent {
+  position: absolute;
+  background: #242729;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+.lightRing {
+  position: absolute;
+}
+
+.lightContainer {
+  width: 100%;
+  position: relative;
+  left: 50%;
+  top: 50%;
+}
