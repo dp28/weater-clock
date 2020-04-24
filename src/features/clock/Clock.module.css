@@ -20,14 +20,3 @@
   height: 100%;
   width: 100%;
 }
-
-.lightRing {
-  position: absolute;
-}
-
-.lightContainer {
-  width: 100%;
-  position: relative;
-  left: 50%;
-  top: 50%;
-}
