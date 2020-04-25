@@ -1,23 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const NumberOfLights = 60;
+
 export const innerRingSlice = createSlice({
   name: "innerRing",
-  initialState: { lights: buildLights(60) },
+  initialState: {
+    lights: buildLights(NumberOfLights),
+    currentIndex: 0,
+    started: false
+  },
   reducers: {
     tick: state => {
-      const currentIndex = state.lights.findIndex(_ => _.on);
-      if (currentIndex === -1 || currentIndex === 59) {
-        state.lights[59].on = false;
-        state.lights[0].on = true;
+      const currentLight = state.lights[state.currentIndex];
+      const previousLight = state.lights[getLightIndex(state.currentIndex - 1)];
+
+      state.currentIndex = getLightIndex(state.currentIndex + 1);
+      currentLight.on = !currentLight.on;
+
+      if (state.started) {
+        previousLight.on = !previousLight.on;
       } else {
-        state.lights[currentIndex].on = false;
-        state.lights[currentIndex + 1].on = true;
+        state.started = true;
       }
+    },
+    setLightColours: (state, { payload: { colours, startIndex = 0 } }) => {
+      colours.slice(0, NumberOfLights).forEach((colour, index) => {
+        const light = state.lights[getLightIndex(index + startIndex)];
+        light.colour = colour;
+        light.on = true;
+      });
     }
   }
 });
 
-export const { tick } = innerRingSlice.actions;
+export const { tick, setLightColours } = innerRingSlice.actions;
 
 export const innerRingReducer = innerRingSlice.reducer;
 
@@ -30,4 +46,9 @@ function buildLights(number) {
     color: "white",
     on: false
   }));
+}
+
+function getLightIndex(number) {
+  const index = number % NumberOfLights;
+  return index >= 0 ? index : NumberOfLights + index;
 }

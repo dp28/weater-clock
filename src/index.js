@@ -5,7 +5,7 @@ import App from "./App";
 import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import { tick } from "./features/innerRing/innerRingSlice";
+import { tick, setLightColours } from "./features/innerRing/innerRingSlice";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +20,17 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+const Snow = "white";
+const Clouds = "#9E9E9E";
+const Rain = "#0288D1";
+const Clear = "#FDD835";
+
+store.dispatch(
+  setLightColours({
+    colours: [Snow, Clouds, Rain, Clear].flatMap(_ => Array(15).fill(_))
+  })
+);
 
 setInterval(() => {
   store.dispatch(tick());

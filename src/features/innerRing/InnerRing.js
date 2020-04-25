@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { LightRing } from "../lightRing/LightRing";
 import { selectInnerRingLights } from "./innerRingSlice";
 
