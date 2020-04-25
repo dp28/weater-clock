@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
+import { useInterval } from "../../useInterval";
 import { LightRing } from "../lightRing/LightRing";
 import styles from "./Clock.module.css";
 
@@ -41,19 +42,4 @@ function buildLights(number) {
     color: "white",
     on: false
   }));
-}
-
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  useEffect(() => {
-    if (delay !== null) {
-      let id = setInterval(() => savedCallback.current(), delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
 }
