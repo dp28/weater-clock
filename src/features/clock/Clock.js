@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useInterval } from "../../useInterval";
+import React, { useState } from "react";
+import { InnerRing } from "../innerRing/InnerRing";
 import { LightRing } from "../lightRing/LightRing";
 import styles from "./Clock.module.css";
 
@@ -26,34 +26,12 @@ function buildLights(number) {
 }
 
 export const Clock = ({ loading = false }) => {
-  const [minutes, setMinutes] = useState(
-    loading ? buildLights(60) : background.minutes,
-    [loading]
-  );
   const [hours, setHours] = useState(buildLights(12));
-  const [togglingOn, setTogglingOn] = useState(true);
-
-  useInterval(
-    () => {
-      const lightToToggle = minutes.findIndex(light =>
-        togglingOn ? !light.on : light.on
-      );
-      if (lightToToggle === -1) {
-        setTogglingOn(!togglingOn);
-      }
-      setMinutes(
-        minutes.map((light, index) =>
-          lightToToggle === index ? { ...light, on: togglingOn } : light
-        )
-      );
-    },
-    loading ? 1000 : null
-  );
 
   return (
     <div className={styles.clock}>
       <div className={styles.clockContent}>
-        <LightRing lights={minutes} inset={2} />
+        <InnerRing />
         <LightRing lights={hours} />
       </div>
     </div>
