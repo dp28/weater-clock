@@ -1,5 +1,5 @@
 {
-  "name": "weather-clock",
+  "name": "weather-clock-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
