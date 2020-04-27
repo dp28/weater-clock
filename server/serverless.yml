@@ -1,0 +1,23 @@
+service: weather-clock-server
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+package:
+  include:
+    - src/**
+  exclude:
+    - "**/*.test.js"
+
+functions:
+  forecast:
+    handler: src/handler.forecast
+    events:
+      - http:
+          path: forecast
+          method: get
+          cors: true

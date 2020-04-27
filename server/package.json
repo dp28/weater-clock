@@ -1,0 +1,13 @@
+{
+  "name": "weather-clock-server",
+  "version": "0.1.0",
+  "main": "src/handler.js",
+  "repository": "https://github.com/dp28/weather-clock",
+  "author": "Daniel Patterson",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^25.4.0",
+    "serverless": "^1.68.0",
+    "serverless-offline": "^6.1.4"
+  }
+}
