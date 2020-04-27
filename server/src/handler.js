@@ -6,7 +6,6 @@ module.exports.forecast = async (event) => {
     body: JSON.stringify(
       {
         message: "Go Serverless v1.0! Your function was executed successfully!",
-        input: event,
       },
       null,
       2

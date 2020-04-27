@@ -2,6 +2,7 @@ service: weather-clock-server
 
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin
 
 provider:
   name: aws

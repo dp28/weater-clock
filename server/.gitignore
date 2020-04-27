@@ -4,3 +4,5 @@
 
 # Serverless directories
 .serverless
+
+.env.*
