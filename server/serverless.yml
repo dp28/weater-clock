@@ -15,10 +15,10 @@ package:
     - "**/*.test.js"
 
 functions:
-  forecast:
-    handler: src/handler.forecast
+  configuration:
+    handler: src/app/configuration.handle
     events:
       - http:
-          path: forecast
+          path: configuration
           method: get
           cors: true
