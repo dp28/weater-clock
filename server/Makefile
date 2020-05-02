@@ -1,9 +1,12 @@
-.PHONY: deploy start remove_stage_from_aws
+.PHONY: deploy start test
 
 STAGE := dev
 
 start: node_modules
 	npx serverless offline
+
+test: node_modules
+	npx jest --watchAll
 
 deploy:
 	npx serverless deploy --stage $(STAGE)

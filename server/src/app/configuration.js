@@ -1,6 +1,7 @@
 "use strict";
 
 const weatherRepo = require("../infrastructure/openWeatherAPIRepository");
+const weatherLayer = require("../domain/weatherLayer");
 
 const Boston = {
   lat: 42.3518129,
@@ -8,13 +9,13 @@ const Boston = {
 };
 
 module.exports.handle = async (event) => {
-  const data = await weatherRepo.get(Boston);
+  const layer = await weatherLayer.build(weatherRepo, Boston);
 
   return {
     statusCode: 200,
     body: JSON.stringify(
       {
-        forecast: data,
+        layers: [layer],
       },
       null,
       2
