@@ -1,5 +1,6 @@
 const weatherLayer = require("./weatherLayer");
-const weatherRepo = require("../infrastructure/hardcodedWeatherRepository");
+const weatherRepoBuilder = require("../infrastructure/hardcodedWeatherRepository");
+const weatherRepo = weatherRepoBuilder();
 
 describe("weatherLayer", () => {
   describe("#build", () => {

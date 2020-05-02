@@ -12,7 +12,11 @@
     "serverless-offline": "^6.1.4"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "axios": "^0.19.2",
     "weather-type": "^0.2.0"
+  },
+  "jest": {
+    "testRegex": "\\.test\\.js$"
   }
 }

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+VERSION=`git rev-parse HEAD`
+STATS="{ deployedAt: new Date(), version: '$VERSION' }"
+node -e "console.log(JSON.stringify($STATS, null, 2))" > deploymentStats.json
+echo "Deploying to environment '$ENVIRONMENT' with stats:"
+cat deploymentStats.json
+npx serverless deploy --stage "$ENVIRONMENT"

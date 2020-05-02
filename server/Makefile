@@ -1,15 +1,16 @@
 .PHONY: deploy start test
 
-STAGE := dev
+ENVIRONMENT ?= development
 
 start: node_modules
-	npx serverless offline
+	@echo "Starting in stage '$(ENVIRONMENT)'"
+	ENVIRONMENT=$(ENVIRONMENT) NODE_ENV=$(ENVIRONMENT) npx serverless offline --stage $(ENVIRONMENT)
 
 test: node_modules
 	npx jest --watchAll
 
-deploy:
-	npx serverless deploy --stage $(STAGE)
+deploy: node_modules
+	ENVIRONMENT=$(ENVIRONMENT) NODE_ENV=$(ENVIRONMENT) ./bin/deploy
 
 node_modules: yarn.lock
 	yarn install

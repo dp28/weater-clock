@@ -7,18 +7,22 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
+  environment:
+    NODE_ENV: ${opt:stage}
 
 package:
   include:
     - src/**
+    - src/config/environment/${opt:stage}.js
   exclude:
     - "**/*.test.js"
+    - src/config/environment/*.js
 
 functions:
-  configuration:
-    handler: src/app/configuration.handle
+  layers:
+    handler: src/app/layers.handle
     events:
       - http:
-          path: configuration
+          path: layers
           method: get
           cors: true
