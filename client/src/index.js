@@ -21,16 +21,34 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-const Snow = "white";
-const Clouds = "#9E9E9E";
-const Rain = "#0288D1";
-const Clear = "#FDD835";
+const Colours = {
+  white: "white",
+  grey: "#9E9E9E",
+  blue: "#0288D1",
+  yellow: "#FDD835",
+};
 
-store.dispatch(
-  setLightColours({
-    colours: [Snow, Clouds, Rain, Clear].flatMap(_ => Array(15).fill(_))
-  })
-);
+async function loadWeather() {
+  const response = await fetch("http://localhost:3000/dev/configuration");
+  const data = await response.json();
+  data.layers.forEach((layer) => {
+    const colours = layer.inner.colours.map(
+      (colourName) => Colours[colourName]
+    );
+    store.dispatch(
+      setLightColours({
+        colours,
+        startIndex: layer.inner.startIndex - calculateTimeZoneOffset(),
+      })
+    );
+  });
+}
+
+function calculateTimeZoneOffset() {
+  return new Date().getTimezoneOffset() / 12;
+}
+
+loadWeather();
 
 setInterval(() => {
   store.dispatch(tick());
