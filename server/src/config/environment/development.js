@@ -7,7 +7,7 @@ function buildConfig(dependencyOverrides = {}) {
     deployedAt: new Date(),
     version: execSync("git rev-parse HEAD", { encoding: "utf-8" }),
     weatherRepository: hardcodedRepositoryBuilder(),
-    allowedDomain: "localhost:3001",
+    allowedDomain: "https://localhost:3001",
   };
 }
 

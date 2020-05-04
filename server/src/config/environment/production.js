@@ -11,7 +11,7 @@ function buildConfig(dependencyOverrides = {}) {
     version,
     deployedAt: new Date(Date.parse(deployedAt)),
     weatherRepository: openWeatherAPIRepositoryBuilder(environment),
-    allowedDomain: "weather-clock.djpdev.com",
+    allowedDomain: "https://weather-clock.djpdev.com",
   };
 }
 
