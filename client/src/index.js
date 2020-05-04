@@ -6,6 +6,7 @@ import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { tick, setLightColours } from "./features/innerRing/innerRingSlice";
+import { apiURL } from "./config";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -29,7 +30,7 @@ const Colours = {
 };
 
 async function loadWeather() {
-  const response = await fetch("http://localhost:3000/dev/configuration");
+  const response = await fetch(apiURL);
   const data = await response.json();
   data.layers.forEach((layer) => {
     const colours = layer.inner.colours.map(
