@@ -10,19 +10,6 @@ export const innerRingSlice = createSlice({
     started: false,
   },
   reducers: {
-    tick: (state) => {
-      const currentLight = state.lights[state.currentIndex];
-      const previousLight = state.lights[getLightIndex(state.currentIndex - 1)];
-
-      state.currentIndex = getLightIndex(state.currentIndex + 1);
-      currentLight.on = !currentLight.on;
-
-      if (state.started) {
-        previousLight.on = !previousLight.on;
-      } else {
-        state.started = true;
-      }
-    },
     setInnerRingColours: (state, { payload: { colours, startIndex = 0 } }) => {
       colours.slice(0, NumberOfLights).forEach((colour, index) => {
         const light = state.lights[getLightIndex(index + startIndex)];
