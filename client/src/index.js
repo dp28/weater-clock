@@ -5,7 +5,7 @@ import App from "./App";
 import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import { setLightColours } from "./features/innerRing/innerRingSlice";
+import { setInnerRingColours } from "./features/innerRing/innerRingSlice";
 import { tick } from "./features/clock/clockSlice";
 import { apiURL } from "./config";
 
@@ -38,7 +38,7 @@ async function loadWeather() {
       (colourName) => Colours[colourName]
     );
     store.dispatch(
-      setLightColours({
+      setInnerRingColours({
         colours,
         startIndex: layer.inner.startIndex - calculateTimeZoneOffset(),
       })

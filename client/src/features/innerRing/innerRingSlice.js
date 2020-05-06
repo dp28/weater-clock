@@ -7,10 +7,10 @@ export const innerRingSlice = createSlice({
   initialState: {
     lights: buildLights(NumberOfLights),
     currentIndex: 0,
-    started: false
+    started: false,
   },
   reducers: {
-    tick: state => {
+    tick: (state) => {
       const currentLight = state.lights[state.currentIndex];
       const previousLight = state.lights[getLightIndex(state.currentIndex - 1)];
 
@@ -23,28 +23,28 @@ export const innerRingSlice = createSlice({
         state.started = true;
       }
     },
-    setLightColours: (state, { payload: { colours, startIndex = 0 } }) => {
+    setInnerRingColours: (state, { payload: { colours, startIndex = 0 } }) => {
       colours.slice(0, NumberOfLights).forEach((colour, index) => {
         const light = state.lights[getLightIndex(index + startIndex)];
         light.colour = colour;
         light.on = true;
       });
-    }
-  }
+    },
+  },
 });
 
-export const { tick, setLightColours } = innerRingSlice.actions;
+export const { tick, setInnerRingColours } = innerRingSlice.actions;
 
 export const innerRingReducer = innerRingSlice.reducer;
 
-export const selectInnerRingLights = state => state.innerRing.lights;
+export const selectInnerRingLights = (state) => state.innerRing.lights;
 
 function buildLights(number) {
   return [...Array(number)].map((_, index) => ({
     index,
     number: index + 1,
     color: "white",
-    on: false
+    on: false,
   }));
 }
 

@@ -1,4 +1,4 @@
-import { innerRingReducer, tick, setLightColours } from "./innerRingSlice";
+import { innerRingReducer, tick, setInnerRingColours } from "./innerRingSlice";
 
 describe("innerRing", () => {
   const initialState = innerRingReducer(undefined, { type: "INIT" });
@@ -12,11 +12,11 @@ describe("innerRing", () => {
       });
 
       it("has only off lights", () => {
-        expect(lights.every(_ => !_.on)).toEqual(true);
+        expect(lights.every((_) => !_.on)).toEqual(true);
       });
 
       it("has only white lights", () => {
-        expect(lights.every(_ => _.color === "white")).toEqual(true);
+        expect(lights.every((_) => _.color === "white")).toEqual(true);
       });
     });
   });
@@ -30,7 +30,7 @@ describe("innerRing", () => {
       });
 
       it("leaves all the other lights off", () => {
-        expect(lights.slice(1).every(_ => !_.on)).toEqual(true);
+        expect(lights.slice(1).every((_) => !_.on)).toEqual(true);
       });
     });
 
@@ -98,8 +98,8 @@ describe("innerRing", () => {
 
     describe("when all lights are on", () => {
       const { lights } = [
-        setLightColours({ colours: Array(60).fill("blue") }),
-        tick()
+        setInnerRingColours({ colours: Array(60).fill("blue") }),
+        tick(),
       ].reduce(innerRingReducer, initialState);
 
       it("turns off the first light", () => {
@@ -107,16 +107,16 @@ describe("innerRing", () => {
       });
 
       it("leaves all the other lights on", () => {
-        expect(lights.slice(1).every(_ => _.on)).toEqual(true);
+        expect(lights.slice(1).every((_) => _.on)).toEqual(true);
       });
     });
   });
 
-  describe("setLightColours", () => {
+  describe("setInnerRingColours", () => {
     describe("if an empty array is passed in", () => {
       const state = innerRingReducer(
         initialState,
-        setLightColours({ colours: [] })
+        setInnerRingColours({ colours: [] })
       );
 
       it("does not change the state", () => {
@@ -127,7 +127,7 @@ describe("innerRing", () => {
     describe("if two colors are passed in", () => {
       const { lights } = innerRingReducer(
         initialState,
-        setLightColours({ colours: ["red", "blue"] })
+        setInnerRingColours({ colours: ["red", "blue"] })
       );
 
       it("turns on the first two lights", () => {
@@ -141,7 +141,7 @@ describe("innerRing", () => {
       });
 
       it("keeps the other lights off", () => {
-        expect(lights.slice(2).every(_ => !_.on)).toBe(true);
+        expect(lights.slice(2).every((_) => !_.on)).toBe(true);
       });
 
       it("keeps the other lights the colours they previously were", () => {
@@ -159,20 +159,20 @@ describe("innerRing", () => {
     describe("if more than 60 colours are passed", () => {
       const { lights } = innerRingReducer(
         initialState,
-        setLightColours({
-          colours: [...Array(62)].map((_, i) => (i < 60 ? "blue" : "red"))
+        setInnerRingColours({
+          colours: [...Array(62)].map((_, i) => (i < 60 ? "blue" : "red")),
         })
       );
 
       it("only uses the first 60", () => {
-        expect(lights.every(_ => _.colour === "blue")).toBe(true);
+        expect(lights.every((_) => _.colour === "blue")).toBe(true);
       });
     });
 
     describe("if a 'startIndex' is passed", () => {
       const { lights } = innerRingReducer(
         initialState,
-        setLightColours({ colours: ["red", "blue"], startIndex: 4 })
+        setInnerRingColours({ colours: ["red", "blue"], startIndex: 4 })
       );
 
       it("changes the colours, starting at the index specified", () => {
@@ -196,7 +196,7 @@ describe("innerRing", () => {
         it("wraps the colour changes around", () => {
           const state = innerRingReducer(
             initialState,
-            setLightColours({ colours: ["red", "blue"], startIndex: 59 })
+            setInnerRingColours({ colours: ["red", "blue"], startIndex: 59 })
           );
           expect(state.lights[59].colour).toEqual("red");
           expect(state.lights[0].colour).toEqual("blue");
