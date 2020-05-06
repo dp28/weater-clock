@@ -7,11 +7,11 @@ import styles from "./Clock.module.css";
 
 export const Clock = ({ loading = false }) => {
   const time = useSelector(selectClockTime);
+  const outerRingOverrides = { [time.hours]: { colour: "#8E24AA" } };
   const innerRingOverrides = {
-    [time.minutes]: { colour: "purple" },
-    [time.seconds]: { colour: "purple" },
+    [time.minutes]: { colour: "#AB47BC" },
+    [time.seconds]: { colour: "#CE93D8" },
   };
-  const outerRingOverrides = { [time.hours]: { colour: "purple" } };
   return (
     <div className={styles.clock}>
       <div className={styles.clockContent}>
