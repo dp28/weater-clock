@@ -5,7 +5,8 @@ import App from "./App";
 import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import { tick, setLightColours } from "./features/innerRing/innerRingSlice";
+import { setLightColours } from "./features/innerRing/innerRingSlice";
+import { tick } from "./features/clock/clockSlice";
 import { apiURL } from "./config";
 
 ReactDOM.render(
