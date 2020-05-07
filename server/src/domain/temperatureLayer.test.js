@@ -46,12 +46,12 @@ describe("temperatureLayer", () => {
 
         it("returns red colours if the temperature is positive", () => {
           const layer = buildAtTemperature({ degreesCelsius: 5 });
-          expect(layer.inner.colours.every((_) => _ === "red")).toEqual(true);
+          expect(layer.inner.colours.every((_) => _ === "hot")).toEqual(true);
         });
 
         it("returns green colours if the temperature is negative", () => {
           const layer = buildAtTemperature({ degreesCelsius: -5 });
-          expect(layer.inner.colours.every((_) => _ === "green")).toEqual(true);
+          expect(layer.inner.colours.every((_) => _ === "cold")).toEqual(true);
         });
       });
 

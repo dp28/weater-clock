@@ -1,5 +1,6 @@
 const forecastLayerBuilder = require("./forecastLayer");
 const temperatureLayerBuilder = require("./temperatureLayer");
+const { convertToColour } = require("./colour");
 
 const layerBuilders = [forecastLayerBuilder, temperatureLayerBuilder];
 
@@ -24,7 +25,9 @@ function combineInnerRings(lower, upper) {
   const findInUpper = buildFindInUpper(lower, upper);
   return {
     startIndex: lower.startIndex || 0,
-    colours: lower.colours.map((colour, index) => findInUpper(index) || colour),
+    colours: lower.colours
+      .map((colour, index) => findInUpper(index) || colour)
+      .map(convertToColour),
   };
 }
 

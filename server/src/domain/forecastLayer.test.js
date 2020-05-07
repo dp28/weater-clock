@@ -27,11 +27,11 @@ describe("forecastLayer", () => {
       it("has colours for each light based on the hour in the forecast data", async () => {
         expect(await (await buildLayer).inner.colours).toEqual(
           [
-            Array(5).fill("grey"),
-            Array(15).fill("blue"),
-            Array(5).fill("white"),
-            Array(5).fill("yellow"),
-            Array(30).fill("grey"),
+            Array(5).fill("cloudy"),
+            Array(15).fill("rain"),
+            Array(5).fill("snow"),
+            Array(5).fill("clear"),
+            Array(30).fill("cloudy"),
           ].flat()
         );
       });

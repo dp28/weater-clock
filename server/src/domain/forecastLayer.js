@@ -52,13 +52,13 @@ function calculateColour(forecastPoint) {
     .map((_) => _.unwrap());
 
   if (willSnow(weatherTypes)) {
-    return "white";
+    return "snow";
   } else if (willRain(weatherTypes)) {
-    return "blue";
+    return "rain";
   } else if (willBeClear(weatherTypes)) {
-    return "yellow";
+    return "clear";
   } else {
-    return "grey";
+    return "cloudy";
   }
 }
 

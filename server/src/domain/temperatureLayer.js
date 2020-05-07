@@ -16,7 +16,7 @@ module.exports.build = (forecast) => {
 function buildInner(currentForecastPoint) {
   const degreesCelsius = currentForecastPoint.temp;
   const numberOfLights = Math.floor(Math.abs(degreesCelsius) / 2);
-  const colour = degreesCelsius > 0 ? "red" : "green";
+  const colour = degreesCelsius > 0 ? "hot" : "cold";
   return {
     colours: Array(numberOfLights).fill(colour),
     startIndex: calculateStartIndex(currentForecastPoint.dt, numberOfLights),

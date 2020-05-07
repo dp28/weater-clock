@@ -23,25 +23,13 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-const Colours = {
-  white: "white",
-  grey: "#9E9E9E",
-  blue: "#0288D1",
-  yellow: "#FDD835",
-  red: "#F44336",
-  green: "#00BCD4",
-};
-
 async function loadWeather() {
   const response = await fetch(apiURL);
   const data = await response.json();
   data.layers.forEach((layer) => {
-    const colours = layer.inner.colours.map(
-      (colourName) => Colours[colourName]
-    );
     store.dispatch(
       setInnerRingColours({
-        colours,
+        colours: layer.inner.colours,
         startIndex: layer.inner.startIndex - calculateTimeZoneOffset(),
       })
     );
