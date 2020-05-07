@@ -1,14 +1,15 @@
 const WeatherType = require("weather-type");
+const {
+  calculateInnerIndexOfHour,
+  HourInSeconds,
+  HoursInInnerRing,
+  InnerLightsPerHour,
+} = require("./timeIndexes");
 
 const EmptyLayer = {
   inner: { colours: [] },
   outer: { colours: [] },
 };
-
-const HourInSeconds = 60 * 60;
-const HalfDayInSeconds = 12 * HourInSeconds;
-const InnerLightsPerHour = 5;
-const SecondsPerLight = HourInSeconds / InnerLightsPerHour;
 
 module.exports.build = (forecast) => {
   if (!forecast) {
@@ -19,15 +20,9 @@ module.exports.build = (forecast) => {
 };
 
 function buildInner(forecast) {
-  const startIndex = calculateStartIndex(forecast.current.dt);
+  const startIndex = calculateInnerIndexOfHour(forecast.current.dt);
   const colours = calculateColours(forecast);
   return { startIndex, colours };
-}
-
-function calculateStartIndex(secondsSinceEpoch) {
-  const secondsToday = secondsSinceEpoch % HalfDayInSeconds;
-  const secondsToStartOfHour = secondsToday - (secondsToday % HourInSeconds);
-  return Math.floor(secondsToStartOfHour / SecondsPerLight);
 }
 
 function calculateColours({ hourly, current }) {
@@ -38,16 +33,16 @@ function calculateColours({ hourly, current }) {
 
 function calculateCurrentHourColours(currentForecastPoint) {
   const colour = calculateColour(currentForecastPoint);
-  return Array(5).fill(colour);
+  return Array(InnerLightsPerHour).fill(colour);
 }
 
 function calculateHourlyColours(hourlyForecasts, currentTime) {
   const startOfHour = currentTime - (currentTime % HourInSeconds);
   const firstIndex = hourlyForecasts.findIndex((_) => _.dt > startOfHour);
   return hourlyForecasts
-    .slice(firstIndex, firstIndex + 11)
+    .slice(firstIndex, firstIndex + (HoursInInnerRing - 1))
     .map(calculateColour)
-    .flatMap((colour) => Array(5).fill(colour));
+    .flatMap((colour) => Array(InnerLightsPerHour).fill(colour));
 }
 
 function calculateColour(forecastPoint) {
