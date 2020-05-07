@@ -20,8 +20,8 @@ describe("weatherLayer", () => {
     describe("when the repo returns weather data", () => {
       const buildLayer = weatherLayer.build(weatherRepo, location);
 
-      it("sets the startIndex based on the current time in UTC in the weather data, to the earliest 12 minutes", async () => {
-        expect((await buildLayer).inner.startIndex).toEqual(3);
+      it("sets the startIndex based on the current hour in UTC in the weather data", async () => {
+        expect((await buildLayer).inner.startIndex).toEqual(0);
       });
 
       it("returns 60 lights in the inner layer", async () => {
@@ -31,11 +31,11 @@ describe("weatherLayer", () => {
       it("has colours for each light based on the hour in the weather data", async () => {
         expect(await (await buildLayer).inner.colours).toEqual(
           [
-            Array(2).fill("grey"),
+            Array(5).fill("grey"),
             Array(15).fill("blue"),
             Array(5).fill("white"),
             Array(5).fill("yellow"),
-            Array(33).fill("grey"),
+            Array(30).fill("grey"),
           ].flat()
         );
       });

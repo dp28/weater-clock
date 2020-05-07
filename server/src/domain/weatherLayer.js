@@ -28,26 +28,26 @@ function buildInner(forecast) {
 
 function calculateStartIndex(secondsSinceEpoch) {
   const secondsToday = secondsSinceEpoch % HalfDayInSeconds;
-  return Math.floor(secondsToday / SecondsPerLight);
+  const secondsToStartOfHour = secondsToday - (secondsToday % HourInSeconds);
+  return Math.floor(secondsToStartOfHour / SecondsPerLight);
 }
 
 function calculateColours({ hourly, current }) {
-  return calculateCurrentHourColours(current)
-    .concat(calculateHourlyColours(hourly, current.dt))
-    .slice(0, 60);
+  return calculateCurrentHourColours(current).concat(
+    calculateHourlyColours(hourly, current.dt)
+  );
 }
 
 function calculateCurrentHourColours(currentForecastPoint) {
   const colour = calculateColour(currentForecastPoint);
-  const repeatsUntilNextHour =
-    Math.floor((currentForecastPoint.dt % HourInSeconds) / SecondsPerLight) - 1;
-  return Array(repeatsUntilNextHour).fill(colour);
+  return Array(5).fill(colour);
 }
 
 function calculateHourlyColours(hourlyForecasts, currentTime) {
-  const firstIndex = hourlyForecasts.findIndex((_) => _.dt > currentTime);
+  const startOfHour = currentTime - (currentTime % HourInSeconds);
+  const firstIndex = hourlyForecasts.findIndex((_) => _.dt > startOfHour);
   return hourlyForecasts
-    .slice(firstIndex, firstIndex + 12)
+    .slice(firstIndex, firstIndex + 11)
     .map(calculateColour)
     .flatMap((colour) => Array(5).fill(colour));
 }
