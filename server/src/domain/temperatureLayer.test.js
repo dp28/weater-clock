@@ -28,34 +28,30 @@ describe("temperatureLayer", () => {
         });
       }
 
-      describe("lights", () => {
-        it("returns one light for every two degrees celsius", () => {
+      describe("colours", () => {
+        it("returns one colour for every two degrees celsius", () => {
           const layer = buildAtTemperature({ degreesCelsius: 10 });
-          expect(layer.inner.lights.length).toEqual(5);
+          expect(layer.inner.colours.length).toEqual(5);
         });
 
-        it("returns one light for every two degrees celsius, rounding down", () => {
+        it("returns one colour for every two degrees celsius, rounding down", () => {
           const layer = buildAtTemperature({ degreesCelsius: 5 });
-          expect(layer.inner.lights.length).toEqual(2);
+          expect(layer.inner.colours.length).toEqual(2);
         });
 
-        it("returns one light for every two degrees celsius, even for negative temperatures", () => {
+        it("returns one colour for every two degrees celsius, even for negative temperatures", () => {
           const layer = buildAtTemperature({ degreesCelsius: -14 });
-          expect(layer.inner.lights.length).toEqual(7);
+          expect(layer.inner.colours.length).toEqual(7);
         });
 
-        it("returns red lights if the temperature is positive", () => {
+        it("returns red colours if the temperature is positive", () => {
           const layer = buildAtTemperature({ degreesCelsius: 5 });
-          expect(layer.inner.lights.every((_) => _.colour === "red")).toEqual(
-            true
-          );
+          expect(layer.inner.colours.every((_) => _ === "red")).toEqual(true);
         });
 
-        it("returns green lights if the temperature is negative", () => {
+        it("returns green colours if the temperature is negative", () => {
           const layer = buildAtTemperature({ degreesCelsius: -5 });
-          expect(layer.inner.lights.every((_) => _.colour === "green")).toEqual(
-            true
-          );
+          expect(layer.inner.colours.every((_) => _ === "green")).toEqual(true);
         });
       });
 

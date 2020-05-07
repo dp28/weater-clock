@@ -28,6 +28,8 @@ const Colours = {
   grey: "#9E9E9E",
   blue: "#0288D1",
   yellow: "#FDD835",
+  red: "#F44336",
+  green: "#00BCD4",
 };
 
 async function loadWeather() {

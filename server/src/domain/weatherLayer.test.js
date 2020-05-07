@@ -11,8 +11,8 @@ describe("weatherLayer", () => {
 
       it("returns an empty layer", async () => {
         expect(await weatherLayer.build(repo, location)).toEqual({
-          inner: { colours: [] },
-          outer: { colours: [] },
+          inner: { colours: [], startIndex: 0 },
+          outer: { colours: [], startIndex: 0 },
         });
       });
     });
@@ -28,14 +28,15 @@ describe("weatherLayer", () => {
         expect(await (await buildLayer).inner.colours.length).toEqual(60);
       });
 
-      it("has colours for each light based on the hour in the weather data", async () => {
+      it.only("has colours for each light based on the hour in the weather data and the current temperature", async () => {
         expect(await (await buildLayer).inner.colours).toEqual(
           [
             Array(5).fill("grey"),
             Array(15).fill("blue"),
             Array(5).fill("white"),
             Array(5).fill("yellow"),
-            Array(30).fill("grey"),
+            Array(27).fill("grey"),
+            Array(3).fill("red"),
           ].flat()
         );
       });

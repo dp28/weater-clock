@@ -18,7 +18,7 @@ function buildInner(currentForecastPoint) {
   const numberOfLights = Math.floor(Math.abs(degreesCelsius) / 2);
   const colour = degreesCelsius > 0 ? "red" : "green";
   return {
-    lights: Array(numberOfLights).fill({ colour }),
+    colours: Array(numberOfLights).fill(colour),
     startIndex: calculateStartIndex(currentForecastPoint.dt, numberOfLights),
   };
 }
