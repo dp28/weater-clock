@@ -27,8 +27,11 @@ describe("clock", () => {
       const initialState = clockReducer(undefined, { type: "INIT" });
       await delay(1000);
       const { time } = clockReducer(initialState, tick());
-      expect(calculateTimeInSeconds(time)).toEqual(
+      expect(calculateTimeInSeconds(time)).toBeGreaterThanOrEqual(
         calculateTimeInSeconds(initialState.time) + 1
+      );
+      expect(calculateTimeInSeconds(time)).toBeLessThanOrEqual(
+        calculateTimeInSeconds(initialState.time) + 2
       );
     });
   });

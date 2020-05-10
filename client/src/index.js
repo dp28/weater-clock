@@ -6,7 +6,7 @@ import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { setInnerRingColours } from "./features/innerRing/innerRingSlice";
-import { tick } from "./features/clock/clockSlice";
+import { startClock } from "./features/clock/clockSlice";
 import { apiURL } from "./config";
 
 ReactDOM.render(
@@ -23,25 +23,4 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-async function loadWeather() {
-  const response = await fetch(apiURL);
-  const data = await response.json();
-  data.layers.forEach((layer) => {
-    store.dispatch(
-      setInnerRingColours({
-        colours: layer.inner.colours,
-        startIndex: layer.inner.startIndex - calculateTimeZoneOffset(),
-      })
-    );
-  });
-}
-
-function calculateTimeZoneOffset() {
-  return new Date().getTimezoneOffset() / 12;
-}
-
-loadWeather();
-
-setInterval(() => {
-  store.dispatch(tick());
-}, 1000);
+store.dispatch(startClock());

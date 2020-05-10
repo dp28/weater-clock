@@ -19,7 +19,7 @@ module.exports.handle = async (_event) => {
       "Access-Control-Allow-Origin": config.allowedDomain,
     },
     body: JSON.stringify({
-      layers: [layer],
+      layer,
     }),
   };
 };

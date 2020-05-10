@@ -1,9 +1,18 @@
-import { innerRingReducer, tick, setInnerRingColours } from "./innerRingSlice";
+import {
+  innerRingReducer,
+  loadLightsIfExpired,
+  setInnerRingColours,
+} from "./innerRingSlice";
+import { apiURL } from "../../config";
 
 describe("innerRing", () => {
   const initialState = innerRingReducer(undefined, { type: "INIT" });
 
   describe("initial state", () => {
+    it("has an expiresAt time of 0", () => {
+      expect(initialState.expiresAt).toEqual(0);
+    });
+
     describe(".lights", () => {
       const lights = initialState.lights;
 
@@ -22,10 +31,18 @@ describe("innerRing", () => {
   });
 
   describe("setInnerRingColours", () => {
+    it("sets expiresAt to the passed-in expiresAt", () => {
+      const state = innerRingReducer(
+        initialState,
+        setInnerRingColours({ colours: [], expiresAt: 5 })
+      );
+      expect(state.expiresAt).toEqual(5);
+    });
+
     describe("if an empty array is passed in", () => {
       const state = innerRingReducer(
         initialState,
-        setInnerRingColours({ colours: [] })
+        setInnerRingColours({ colours: [], expiresAt: 0 })
       );
 
       it("does not change the state", () => {
@@ -110,6 +127,62 @@ describe("innerRing", () => {
           expect(state.lights[59].colour).toEqual("red");
           expect(state.lights[0].colour).toEqual("blue");
         });
+      });
+    });
+  });
+
+  describe("loadLightsIfExpired", () => {
+    function buildMockFetch(response) {
+      return jest.fn(async () => ({ json: async () => response }));
+    }
+
+    describe("in the initial state", () => {
+      it("calls the API", async () => {
+        const mockFetch = buildMockFetch({ layers: [] });
+        const mockDispatch = jest.fn();
+        await loadLightsIfExpired(mockFetch)(mockDispatch, () => ({
+          innerRing: {
+            expiresAt: 0,
+          },
+        }));
+        expect(mockFetch).toHaveBeenCalledWith(apiURL);
+      });
+
+      describe("after the API request succeeds", () => {
+        it("sets the colours, time zone adjusted", async () => {
+          const layer = {
+            inner: {
+              colours: ["red"],
+              startIndex: 10,
+            },
+            expiresAt: 5,
+          };
+          const mockFetch = buildMockFetch({ layer });
+          const mockDispatch = jest.fn();
+          await loadLightsIfExpired(mockFetch)(mockDispatch, () => ({
+            innerRing: {
+              expiresAt: 0,
+            },
+          }));
+          expect(mockDispatch).toHaveBeenCalledWith(
+            setInnerRingColours({
+              colours: layer.inner.colours,
+              startIndex: 10 - new Date().getTimezoneOffset() / 12,
+              expiresAt: 5,
+            })
+          );
+        });
+      });
+    });
+
+    describe("when the data has not expired", () => {
+      it("does not call the API", async () => {
+        const mockFetch = buildMockFetch({ layers: [] });
+        const mockDispatch = jest.fn();
+        await loadLightsIfExpired(mockFetch)(mockDispatch, () => ({
+          innerRing: { expiresAt: new Date().getTime() + 5000 },
+        }));
+        expect(mockFetch).not.toHaveBeenCalled();
       });
     });
   });
