@@ -7,7 +7,10 @@ const layerBuilders = [forecastLayerBuilder, temperatureLayerBuilder];
 module.exports.build = async (weatherRepository, location) => {
   const forecast = await weatherRepository.get(location);
   const layers = layerBuilders.map((builder) => builder.build(forecast));
-  return combineLayers(layers);
+  return {
+    ...combineLayers(layers),
+    expiresAt: fifteenMinutesFromNow(),
+  };
 };
 
 function combineLayers(layers) {
@@ -38,4 +41,8 @@ function buildFindInUpper(lower, upper) {
   return (indexInLower) => {
     return upper.colours[(indexInLower + conversionIndex) % ringSize];
   };
+}
+
+function fifteenMinutesFromNow() {
+  return new Date().getTime() + 15 * 60 * 1000;
 }

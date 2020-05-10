@@ -9,11 +9,21 @@ describe("weatherLayer", () => {
     describe("when the repo returns null", () => {
       const repo = { get: async () => null };
 
-      it("returns an empty layer", async () => {
-        expect(await weatherLayer.build(repo, location)).toEqual({
-          inner: { colours: [], startIndex: 0 },
-          outer: { colours: [], startIndex: 0 },
-        });
+      it("returns an empty inner layer", async () => {
+        const { inner } = await weatherLayer.build(repo, location);
+        expect(inner).toEqual({ colours: [], startIndex: 0 });
+      });
+
+      it("returns an empty outer layer", async () => {
+        const { outer } = await weatherLayer.build(repo, location);
+        expect(outer).toEqual({ colours: [], startIndex: 0 });
+      });
+
+      it("returns an expiresAt of 15 minutes now", async () => {
+        const { expiresAt } = await weatherLayer.build(repo, location);
+        const expected = new Date().getTime() + 15 * 60 * 1000;
+        expect(expiresAt).toBeGreaterThanOrEqual(expected);
+        expect(expiresAt).toBeLessThanOrEqual(expected + 1000);
       });
     });
 
@@ -28,7 +38,7 @@ describe("weatherLayer", () => {
         expect(await (await buildLayer).inner.colours.length).toEqual(60);
       });
 
-      it.only("has colours for each light based on the hour in the weather data and the current temperature", async () => {
+      it("has colours for each light based on the hour in the weather data and the current temperature", async () => {
         expect(await (await buildLayer).inner.colours).toEqual(
           [
             Array(5).fill("#9E9E9E"),
