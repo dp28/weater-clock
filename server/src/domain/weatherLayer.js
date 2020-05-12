@@ -1,6 +1,10 @@
 const forecastLayerBuilder = require("./forecastLayer");
 const temperatureLayerBuilder = require("./temperatureLayer");
 const { convertToColour } = require("./colour");
+const { getCurrentTime } = require("../config");
+
+const FIFTEEN_MINUTES_IN_MILLIS = 15 * 60 * 1000;
+const HOUR_IN_MILLIS = 4 * FIFTEEN_MINUTES_IN_MILLIS;
 
 const layerBuilders = [forecastLayerBuilder, temperatureLayerBuilder];
 
@@ -9,7 +13,7 @@ module.exports.build = async (weatherRepository, location) => {
   const layers = layerBuilders.map((builder) => builder.build(forecast));
   return {
     ...combineLayers(layers),
-    expiresAt: fifteenMinutesFromNow(),
+    expiresAt: calculateExpiryTime(),
   };
 };
 
@@ -43,6 +47,23 @@ function buildFindInUpper(lower, upper) {
   };
 }
 
-function fifteenMinutesFromNow() {
-  return new Date().getTime() + 15 * 60 * 1000;
+function calculateExpiryTime() {
+  const now = getCurrentTime();
+  if (isLessThanFifteenMinutesUntilNextHour(now)) {
+    return nextHour(now);
+  } else {
+    return fifteenMinutesFrom(now);
+  }
+}
+
+function isLessThanFifteenMinutesUntilNextHour(date) {
+  return date.getTime() % HOUR_IN_MILLIS > 3 * FIFTEEN_MINUTES_IN_MILLIS;
+}
+
+function nextHour(date) {
+  return Math.ceil(date.getTime() / HOUR_IN_MILLIS) * HOUR_IN_MILLIS;
+}
+
+function fifteenMinutesFrom(date) {
+  return date.getTime() + FIFTEEN_MINUTES_IN_MILLIS;
 }

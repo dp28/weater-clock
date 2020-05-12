@@ -6,6 +6,7 @@ const ConfigSchema = Joi.object().keys({
   version: Joi.string(),
   weatherRepository: Joi.any(),
   allowedDomain: Joi.string(),
+  getCurrentTime: Joi.func().optional(),
 });
 
 function validateConfig(config) {
@@ -30,4 +31,5 @@ if (config.environment !== "TEST") {
 module.exports = {
   validateConfig,
   ...config,
+  getCurrentTime: config.getCurrentTime || (() => new Date()),
 };

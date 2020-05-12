@@ -1,10 +1,15 @@
 const weatherLayer = require("./weatherLayer");
 const weatherRepoBuilder = require("../infrastructure/hardcodedWeatherRepository");
 const weatherRepo = weatherRepoBuilder();
+const { getCurrentTime } = require("../config");
 
 describe("weatherLayer", () => {
   describe("#build", () => {
     const location = { lat: 1, lon: 2 };
+    const now = new Date(2020, 1, 1, 11, 30);
+
+    beforeEach(() => getCurrentTime.set(now));
+    afterEach(() => getCurrentTime.restore());
 
     describe("when the repo returns null", () => {
       const repo = { get: async () => null };
@@ -21,9 +26,19 @@ describe("weatherLayer", () => {
 
       it("returns an expiresAt of 15 minutes now", async () => {
         const { expiresAt } = await weatherLayer.build(repo, location);
-        const expected = new Date().getTime() + 15 * 60 * 1000;
-        expect(expiresAt).toBeGreaterThanOrEqual(expected);
-        expect(expiresAt).toBeLessThanOrEqual(expected + 1000);
+        const expected = now.getTime() + 15 * 60 * 1000;
+        expect(expiresAt).toEqual(expected);
+      });
+
+      describe("when it is less than 15 minutes to the end of the hour", () => {
+        beforeEach(() => getCurrentTime.set(new Date(2020, 1, 1, 11, 46)));
+        afterEach(() => getCurrentTime.restore());
+
+        it("expires at the start of the next hour", async () => {
+          const { expiresAt } = await weatherLayer.build(repo, location);
+          const expected = new Date(2020, 1, 1, 12, 0).getTime();
+          expect(expiresAt).toEqual(expected);
+        });
       });
     });
 
