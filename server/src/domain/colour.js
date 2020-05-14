@@ -7,6 +7,26 @@ const ColourMap = {
   cold: "#4DD0E1",
 };
 
+function convertHourToColours(weatherType) {
+  return convertHourToLights(weatherType).map(convertToColour);
+}
+
+function convertHourToLights(weatherType) {
+  if (weatherType === "light_clouds") {
+    return ["cloudy", "clear", "cloudy", "clear", "cloudy"];
+  } else if (weatherType.slice(0, 6) === "light_") {
+    const baseWeatherType = weatherType.slice(6);
+    return ["cloudy", baseWeatherType, "cloudy", baseWeatherType, "cloudy"];
+  } else {
+    return Array(5).fill(weatherType);
+  }
+}
+
+function convertToColour(weatherType) {
+  return ColourMap[weatherType];
+}
+
 module.exports = {
-  convertToColour: (string) => ColourMap[string],
+  convertToColour,
+  convertHourToColours,
 };

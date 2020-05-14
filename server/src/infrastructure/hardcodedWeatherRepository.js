@@ -19,10 +19,10 @@ module.exports = () => ({
       wind_deg: 130,
       weather: [
         {
-          id: 804,
+          id: 801,
           main: "Clouds",
-          description: "overcast clouds",
-          icon: "04d",
+          description: "few clouds: 11-25%",
+          icon: "02d",
         },
       ],
     },
@@ -105,9 +105,9 @@ module.exports = () => ({
         wind_deg: 134,
         weather: [
           {
-            id: 500,
+            id: 501,
             main: "Rain",
-            description: "light rain",
+            description: "moderate rain",
             icon: "10d",
           },
         ],
@@ -222,9 +222,9 @@ module.exports = () => ({
         wind_deg: 140,
         weather: [
           {
-            id: 804,
+            id: 803,
             main: "Clouds",
-            description: "overcast clouds",
+            description: "broken clouds",
             icon: "04d",
           },
         ],
@@ -241,9 +241,9 @@ module.exports = () => ({
         wind_deg: 137,
         weather: [
           {
-            id: 804,
+            id: 803,
             main: "Clouds",
-            description: "overcast clouds",
+            description: "broken clouds",
             icon: "04d",
           },
         ],
@@ -267,6 +267,7 @@ module.exports = () => ({
           },
         ],
       },
+      // 13th hour
       {
         dt: 1588291200,
         temp: 10.08,

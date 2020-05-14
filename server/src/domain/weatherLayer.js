@@ -1,6 +1,6 @@
 const forecastLayerBuilder = require("./forecastLayer");
 const temperatureLayerBuilder = require("./temperatureLayer");
-const { convertToColour } = require("./colour");
+const { convertHourToColours, convertToColour } = require("./colour");
 const { getCurrentTime } = require("../config");
 
 const FIFTEEN_MINUTES_IN_MILLIS = 15 * 60 * 1000;
@@ -29,12 +29,18 @@ function combineTwoLayers(lower, upper) {
 }
 
 function combineInnerRings(lower, upper) {
-  const findInUpper = buildFindInUpper(lower, upper);
+  const lowerColours = {
+    ...lower,
+    colours: lower.colours.flatMap(convertHourToColours),
+  };
+
+  const findInUpper = buildFindInUpper(lowerColours, upper);
   return {
-    startIndex: lower.startIndex || 0,
-    colours: lower.colours
-      .map((colour, index) => findInUpper(index) || colour)
-      .map(convertToColour),
+    startIndex: lowerColours.startIndex || 0,
+    colours: lowerColours.colours.map((colour, index) => {
+      const upperType = findInUpper(index);
+      return upperType ? convertToColour(upperType) : colour;
+    }),
   };
 }
 
